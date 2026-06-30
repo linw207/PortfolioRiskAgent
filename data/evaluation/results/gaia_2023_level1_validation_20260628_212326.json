@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "benchmark": "GAIA",
+  "dataset": "gaia-benchmark/GAIA",
+  "config": "2023_level1",
+  "split": "validation",
+  "level": 1,
+  "limit": 1,
+  "case_count": 1,
+  "scorable_count": 1,
+  "metrics": {
+    "exact_match": 0.0,
+    "correct": 0,
+    "scorable": 1,
+    "elapsed_ms": 2262.26
+  },
+  "scoring_note": "Local exact-match scoring is available for validation splits. GAIA test split answers are private and require leaderboard submission.",
+  "details": [
+    {
+      "task_id": "e1fc63a2-da7a-432f-be78-7c4a95598703",
+      "level": 1,
+      "question": "If Eliud Kipchoge could maintain his record-making marathon pace indefinitely, how many thousand hours would it take him to run the distance between the Earth and the Moon its closest approach? Please use the minimum perigee value on the Wikipedia page for the Moon when carrying out your calculation. Round your result to the nearest 1000 hours and do not use any comma separators if necessary.",
+      "raw_file_path": "",
+      "file_path": "",
+      "expected_answer": "17",
+      "raw_model_output": "FINAL ANSWER: 1057243",
+      "predicted_answer": "1057243",
+      "normalized_expected": "17",
+      "normalized_predicted": "1057243",
+      "scorable": true,
+      "correct": false,
+      "error": "",
+      "latency_ms": 1682.62
+    }
+  ]
+}

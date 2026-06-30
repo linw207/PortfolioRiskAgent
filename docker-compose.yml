@@ -1,0 +1,37 @@
+name: portfolio-risk-agent
+
+services:
+  redis:
+    image: redis:latest
+    container_name: pra-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - pra_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  chroma:
+    image: chromadb/chroma:0.4.24
+    container_name: pra-chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - pra_chroma_data:/chroma/chroma
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /chroma/chroma
+      ANONYMIZED_TELEMETRY: "FALSE"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/heartbeat', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pra_redis_data:
+  pra_chroma_data:

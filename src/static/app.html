@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PortfolioRiskAgent</title>
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">PRA</div>
+          <div>
+            <h1>PortfolioRiskAgent</h1>
+            <p>主动型持仓风险 Agent</p>
+          </div>
+        </div>
+        <nav class="nav" aria-label="主导航">
+          <button class="nav-item active" data-view="overview">总览</button>
+          <button class="nav-item" data-view="portfolio">持仓上传</button>
+          <button class="nav-item" data-view="watchlist">关注池</button>
+          <button class="nav-item" data-view="journal">交易日志</button>
+          <button class="nav-item" data-view="schedule">定时任务</button>
+          <button class="nav-item" data-view="notify">通知设置</button>
+          <button class="nav-item" data-view="tasks">任务中心</button>
+          <button class="nav-item" data-view="report">报告查看</button>
+          <button class="nav-item" data-view="trace">Agent 轨迹</button>
+          <button class="nav-item" data-view="evaluation">评估面板</button>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h2 id="viewTitle">总览</h2>
+            <p id="viewSubtitle">从持仓录入到报告、通知和轨迹审计的端到端演示。</p>
+          </div>
+          <div class="toolbar">
+            <label class="field compact">
+              <span>用户</span>
+              <input id="userId" value="user_demo" />
+            </label>
+            <button id="refreshBtn" class="btn ghost">刷新</button>
+          </div>
+        </header>
+
+        <section id="toast" class="toast" hidden></section>
+
+        <section class="view active" id="view-overview">
+          <div class="metrics">
+            <div class="metric">
+              <span>组合</span>
+              <strong id="metricPortfolios">0</strong>
+            </div>
+            <div class="metric">
+              <span>关注</span>
+              <strong id="metricWatch">0</strong>
+            </div>
+            <div class="metric">
+              <span>任务</span>
+              <strong id="metricTasks">0</strong>
+            </div>
+            <div class="metric">
+              <span>通知记录</span>
+              <strong id="metricNotifications">0</strong>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <h3>一键演示链路</h3>
+              <button id="runDemoBtn" class="btn primary">运行端到端体检</button>
+            </div>
+            <div class="flow">
+              <span>创建组合</span>
+              <span>写交易日志</span>
+              <span>生成报告</span>
+              <span>归档报告</span>
+              <span>发送飞书</span>
+            </div>
+            <pre id="demoOutput" class="code">等待运行。</pre>
+          </div>
+        </section>
+
+        <section class="view" id="view-portfolio">
+          <div class="grid two">
+            <form id="portfolioForm" class="panel form">
+              <div class="panel-head"><h3>手动创建组合</h3></div>
+              <label class="field"><span>组合名称</span><input name="name" value="核心持仓组合" /></label>
+              <div class="row">
+                <label class="field"><span>股票代码</span><input name="symbol" value="300750" /></label>
+                <label class="field"><span>名称</span><input name="stockName" value="宁德时代" /></label>
+              </div>
+              <div class="row">
+                <label class="field"><span>持仓数量</span><input name="shares" type="number" value="100" /></label>
+                <label class="field"><span>成本价</span><input name="cost_price" type="number" value="235" /></label>
+              </div>
+              <label class="field"><span>买入理由</span><textarea name="buy_reason">看好成长和业绩增长，长期持有。</textarea></label>
+              <button class="btn primary" type="submit">创建组合</button>
+            </form>
+            <form id="csvForm" class="panel form">
+              <div class="panel-head"><h3>CSV 上传</h3></div>
+              <input id="csvFile" type="file" accept=".csv" />
+              <p class="hint">支持字段：股票代码、持仓数量、成本价、股票名称、买入理由。</p>
+              <button class="btn" type="submit">上传 CSV</button>
+            </form>
+          </div>
+          <div class="panel"><div class="panel-head"><h3>组合列表</h3></div><div id="portfolioList" class="table"></div></div>
+        </section>
+
+        <section class="view" id="view-watchlist">
+          <form id="watchForm" class="panel form inline">
+            <label class="field"><span>股票代码</span><input name="symbol" value="300750" /></label>
+            <label class="field"><span>名称</span><input name="name" value="宁德时代" /></label>
+            <label class="field"><span>标签</span><input name="tags" value="新能源,龙头" /></label>
+            <button class="btn primary" type="submit">加入关注</button>
+          </form>
+          <div class="panel"><div class="panel-head"><h3>关注池</h3></div><div id="watchList" class="table"></div></div>
+        </section>
+
+        <section class="view" id="view-journal">
+          <form id="journalForm" class="panel form">
+            <div class="panel-head"><h3>记录交易理由</h3></div>
+            <div class="row">
+              <label class="field"><span>股票代码</span><input name="symbol" value="300750" /></label>
+              <label class="field"><span>动作</span><select name="action"><option value="buy">买入</option><option value="add">加仓</option><option value="reduce">减仓</option><option value="sell">卖出</option></select></label>
+              <label class="field"><span>日期</span><input name="trade_date" type="date" /></label>
+            </div>
+            <div class="row">
+              <label class="field"><span>价格</span><input name="price" type="number" value="235" /></label>
+              <label class="field"><span>数量</span><input name="shares" type="number" value="100" /></label>
+              <label class="field"><span>复盘天数</span><input name="review_after_days" type="number" value="7" /></label>
+            </div>
+            <label class="field"><span>理由</span><textarea name="reason">看好成长和业绩增长，长期持有。</textarea></label>
+            <button class="btn primary" type="submit">保存日志</button>
+          </form>
+          <div class="panel"><div class="panel-head"><h3>交易日志</h3></div><div id="journalList" class="table"></div></div>
+        </section>
+
+        <section class="view" id="view-schedule">
+          <form id="scheduleForm" class="panel form inline">
+            <label class="field"><span>任务类型</span><select name="job_type"><option value="daily_portfolio_check">每日持仓体检</option><option value="announcement_radar">公告风险雷达</option><option value="trade_review_reminder">交易复盘提醒</option><option value="weekly_portfolio_report">周报</option></select></label>
+            <label class="field"><span>目标组合</span><select id="schedulePortfolio" name="target_id"></select></label>
+            <label class="check"><input name="enabled" type="checkbox" checked /> 启用</label>
+            <button class="btn primary" type="submit">创建定时任务</button>
+            <button id="runEnabledBtn" class="btn" type="button">运行已启用</button>
+            <button id="recoverBtn" class="btn ghost" type="button">恢复任务</button>
+          </form>
+          <div class="panel"><div class="panel-head"><h3>定时任务</h3></div><div id="scheduleList" class="table"></div></div>
+        </section>
+
+        <section class="view" id="view-notify">
+          <form id="notifyForm" class="panel form">
+            <div class="panel-head"><h3>飞书通知渠道</h3></div>
+            <div class="row">
+              <label class="field"><span>渠道类型</span><select name="channel_type"><option value="feishu_cli">飞书 CLI 私聊</option><option value="feishu">飞书群机器人</option></select></label>
+              <label class="field"><span>渠道名称</span><input name="channel_name" value="飞书私聊" /></label>
+            </div>
+            <label class="field"><span>Webhook 或 user_open_id</span><input name="webhook_url" value="ou_e0e08f3d4fed10b2516407ba8c33f0c9" /></label>
+            <label class="field"><span>Secret</span><input name="secret" placeholder="群机器人签名密钥，可选" /></label>
+            <label class="field"><span>事件类型</span><input name="event_types" value="report_ready,task_failed,high_risk_event,trade_review_reminder" /></label>
+            <button class="btn primary" type="submit">保存渠道</button>
+            <button id="cliStatusBtn" class="btn" type="button">检查 CLI</button>
+          </form>
+          <div class="grid two">
+            <div class="panel"><div class="panel-head"><h3>渠道</h3></div><div id="channelList" class="table"></div></div>
+            <div class="panel"><div class="panel-head"><h3>通知记录</h3><button id="retryNotifyBtn" class="btn small">重试失败</button></div><div id="notificationList" class="table"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-tasks">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>任务中心</h3>
+              <div class="toolbar"><button id="createTaskBtn" class="btn">创建任务</button><button id="runReportBtn" class="btn primary">生成报告</button></div>
+            </div>
+            <label class="field compact"><span>组合</span><select id="taskPortfolio"></select></label>
+            <div id="taskList" class="table"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-report">
+          <div class="panel">
+            <div class="panel-head"><h3>报告查看</h3><button id="loadReportBtn" class="btn">读取报告</button></div>
+            <label class="field compact"><span>任务</span><select id="reportTask"></select></label>
+            <article id="reportContent" class="report"></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-trace">
+          <div class="panel">
+            <div class="panel-head"><h3>Agent 轨迹</h3><button id="loadTraceBtn" class="btn">读取轨迹</button></div>
+            <label class="field compact"><span>任务</span><select id="traceTask"></select></label>
+            <div class="grid two">
+              <div><h4>AgentRunRecord</h4><div id="agentRuns" class="timeline"></div></div>
+              <div><h4>ToolCallRecord</h4><div id="toolCalls" class="timeline"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-evaluation">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Day13 评估面板</h3>
+              <div class="toolbar">
+                <button id="runEvalBtn" class="btn primary">运行评估</button>
+                <button id="loadEvalBtn" class="btn">读取最近结果</button>
+              </div>
+            </div>
+            <div id="evaluationMetrics" class="metrics evaluation-metrics"></div>
+            <div id="evaluationSuites" class="evaluation-suites"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

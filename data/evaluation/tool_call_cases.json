@@ -1,0 +1,46 @@
+[
+  {
+    "id": "tool_simple_quote",
+    "category": "simple",
+    "prompt": "查询 300750.SZ 的最新股票价格。",
+    "context": {},
+    "expected_calls": [
+      {"name": "get_stock_price", "arguments": {"symbol": "300750.SZ"}}
+    ]
+  },
+  {
+    "id": "tool_simple_financials",
+    "category": "simple",
+    "prompt": "查看 000001.SZ 的核心财务指标。",
+    "context": {},
+    "expected_calls": [
+      {"name": "get_financial_metrics", "arguments": {"symbol": "000001.SZ"}}
+    ]
+  },
+  {
+    "id": "tool_multiple_portfolio_risk",
+    "category": "multiple",
+    "prompt": "计算这个组合的风险暴露和集中度。",
+    "context": {
+      "portfolio": {
+        "user_id": "eval_user",
+        "portfolio_id": "portfolio_eval",
+        "name": "评估组合",
+        "holdings": [
+          {"symbol": "300750.SZ", "name": "宁德时代", "shares": 100, "cost_price": 235},
+          {"symbol": "000001.SZ", "name": "平安银行", "shares": 1000, "cost_price": 10.8}
+        ]
+      }
+    },
+    "expected_calls": [
+      {"name": "calculate_portfolio_risk", "arguments": {"portfolio_id": "portfolio_eval"}}
+    ]
+  },
+  {
+    "id": "tool_irrelevance_no_call",
+    "category": "irrelevance",
+    "prompt": "解释夏普比率的含义，不需要查询工具。",
+    "context": {},
+    "expected_calls": []
+  }
+]

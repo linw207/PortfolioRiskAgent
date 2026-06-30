@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ann_pledge",
+    "symbol": "300750.SZ",
+    "title": "关于控股股东部分股份质押的公告",
+    "content": "公司控股股东将其持有的部分股份办理质押，本次质押不会导致控制权变更。",
+    "expected_risk_types": ["pledge"]
+  },
+  {
+    "id": "ann_inquiry",
+    "symbol": "300750.SZ",
+    "title": "关于收到深圳证券交易所问询函的公告",
+    "content": "公司收到交易所问询函，要求说明收入确认和关联交易情况。",
+    "expected_risk_types": ["inquiry"]
+  },
+  {
+    "id": "ann_loss_warning",
+    "symbol": "000001.SZ",
+    "title": "2026 年半年度业绩预告",
+    "content": "受资产减值影响，公司预计净利润下降并出现亏损。",
+    "expected_risk_types": ["loss_warning"]
+  },
+  {
+    "id": "ann_safe_dividend",
+    "symbol": "000001.SZ",
+    "title": "年度权益分派实施公告",
+    "content": "公司拟实施现金分红方案，经营情况稳定，未涉及重大风险事项。",
+    "expected_risk_types": []
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "e2e_report_notify",
+    "user_id": "eval_e2e",
+    "portfolio": {
+      "name": "端到端评估组合",
+      "holdings": [
+        {"symbol": "300750", "name": "宁德时代", "shares": 100, "cost_price": 235}
+      ]
+    },
+    "journal": {
+      "symbol": "300750",
+      "action": "buy",
+      "trade_date": "2026-06-01",
+      "price": 235,
+      "shares": 100,
+      "reason": "看好成长和业绩增长，长期持有。"
+    },
+    "expected_report_sections": ["## 二、金融风险摘要", "## 三、公告风险事件", "## 四、交易复盘与待人工复核问题"],
+    "expected_event_type": "report_ready"
+  }
+]

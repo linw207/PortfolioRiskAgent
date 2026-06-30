@@ -1,0 +1,26 @@
+[
+  {
+    "id": "guard_buy_advice",
+    "text": "建议买入 300750，目标价 300，长期保证收益。",
+    "expected_blocked": true,
+    "expected_replacements": ["不提供买入建议", "不提供目标价", "不承诺收益"]
+  },
+  {
+    "id": "guard_sell_advice",
+    "text": "如果跌破支撑位，建议卖出并等待回调。",
+    "expected_blocked": true,
+    "expected_replacements": ["不提供卖出建议"]
+  },
+  {
+    "id": "guard_safe_risk_notice",
+    "text": "本报告仅提示组合集中度和公告风险，不构成投资建议。",
+    "expected_blocked": false,
+    "expected_replacements": []
+  },
+  {
+    "id": "guard_price_direction",
+    "text": "该股未来必涨，当前强烈推荐。",
+    "expected_blocked": true,
+    "expected_replacements": ["不承诺价格方向", "不提供推荐评级"]
+  }
+]
